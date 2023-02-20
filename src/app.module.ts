@@ -14,6 +14,7 @@ import { TaskTag } from './entities/task/task-tag.entity';
 import { TaskType } from './entities/task/task-type.entity';
 import { Task } from './entities/task/task.entity';
 import { User } from './entities/user.entity';
+import { ProjectModule } from './project/project.module';
 
 @Module({
   imports: [
@@ -40,6 +41,7 @@ import { User } from './entities/user.entity';
         TaskResolution,
       ],
     }),
+    ProjectModule,
   ],
   controllers: [AppController],
   providers: [AppService],
