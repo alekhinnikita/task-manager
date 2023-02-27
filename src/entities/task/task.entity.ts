@@ -58,6 +58,7 @@ export class Task {
   @ManyToMany(() => Component)
   @JoinTable({ name: 'task_components' })
   components: Component[];
-  @OneToOne(() => Issue, { nullable: true })
+  @ManyToMany(() => Issue)
+  @JoinTable({ name: 'task_issues'})
   issue: Issue;
 }
