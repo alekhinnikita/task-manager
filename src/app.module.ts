@@ -19,13 +19,16 @@ import { ProjectModule } from './project/project.module';
 @Module({
   imports: [
     TypeOrmModule.forRoot({
-      type: 'postgres',
-      host: 'localhost',
-      port: 5432,
-      username: 'postgres',
-      password: '123',
+      type: 'mssql',
+      host: `192.168.147.69\\MSSQL2`,
+      port: 1433,
+      username: 'pk',
+      password: '1',
       database: 'task_manager',
       synchronize: true,
+      extra: {
+        trustServerCertificate: true,
+      },
       entities: [
         User,
         Department,
