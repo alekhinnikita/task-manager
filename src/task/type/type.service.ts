@@ -10,22 +10,22 @@ import {
 } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Project } from 'src/entities/project.entity';
-import { TaskTag } from 'src/entities/task/task-tag.entity';
+import { TaskType } from 'src/entities/task/task-Type.entity';
 import { Repository } from 'typeorm';
-import { CreateTaskTagDTO, UpdateTaskTagDTO } from './models';
+import { CreateTaskTypeDTO, UpdateTaskTypeDTO } from './models';
 
 @Injectable()
-export class TagService {
+export class TypeService {
   constructor(
     @InjectRepository(Project)
     private projectRep: Repository<Project>,
-    @InjectRepository(TaskTag)
-    private tagsRep: Repository<TaskTag>,
+    @InjectRepository(TaskType)
+    private TypesRep: Repository<TaskType>,
   ) {}
 
   @Get('project/:id')
   getAllForProject(@Param('id') projectId: number) {
-    return this.tagsRep.find({
+    return this.TypesRep.find({
       relations: { project: true },
       where: { project: { id: projectId } },
     });
@@ -33,24 +33,24 @@ export class TagService {
 
   @Get(':id')
   getOneById(@Param('id') id: number) {
-    return this.tagsRep.find({
+    return this.TypesRep.find({
       relations: { project: true },
       where: { id: id },
     });
   }
 
   @Post()
-  async create(@Body() dto: CreateTaskTagDTO) {
+  async create(@Body() dto: CreateTaskTypeDTO) {
     const project = await this.projectRep.findOneByOrFail({
       id: dto.projectId,
     });
-    const tag = this.tagsRep.create({
+    const Type = this.TypesRep.create({
       project: project,
       name: dto.name,
       description: dto.description,
     });
     try {
-      return this.tagsRep.save(tag);
+      return this.TypesRep.save(Type);
     } catch (e) {
       console.error(e);
       throw new InternalServerErrorException();
@@ -58,12 +58,12 @@ export class TagService {
   }
 
   @Put()
-  async update(@Body() dto: UpdateTaskTagDTO) {
-    const tag = await this.tagsRep.findOneByOrFail({ id: dto.id });
-    if (dto.name) tag.name = dto.name;
-    if (dto.description) tag.description = dto.description;
+  async update(@Body() dto: UpdateTaskTypeDTO) {
+    const Type = await this.TypesRep.findOneByOrFail({ id: dto.id });
+    if (dto.name) Type.name = dto.name;
+    if (dto.description) Type.description = dto.description;
     try {
-      return this.tagsRep.save(tag);
+      return this.TypesRep.save(Type);
     } catch (e) {
       console.error(e);
       throw new InternalServerErrorException();
@@ -72,9 +72,9 @@ export class TagService {
 
   @Delete(':id')
   async remove(@Param(':id') id: number) {
-    const tag = await this.tagsRep.findOneByOrFail({ id: id });
+    const Type = await this.TypesRep.findOneByOrFail({ id: id });
     try {
-      return this.tagsRep.remove(tag);
+      return this.TypesRep.remove(Type);
     } catch (e) {
       console.error(e);
       throw new InternalServerErrorException();
